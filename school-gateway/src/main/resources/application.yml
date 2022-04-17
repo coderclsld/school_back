@@ -1,0 +1,33 @@
+server:
+  port: 8006
+
+spring:
+  application:
+    name: gateway
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lowerCaseServiceId: true
+      routes:
+        - id: CommunityApplication
+          uri: lb://school-consumer-community
+          predicates:
+            - Path=/community/**
+        - id: ManagementApplication
+          uri: lb://school-consumer-management
+          predicates:
+            - Path=/manage/**
+        - id: ChatApplication
+          uri: ws://localhost:8005
+          predicates:
+            - Path=/chat/**
+eureka:
+  client:
+    #表示是否将自己注册进eureka  默认为true
+    register-with-eureka: true
+    #是否从EurekaServer中抓取已有的注册信息，默认为true，单点无所谓，集群必须设置true才能和ribbon使用负载均衡
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8000/eureka/

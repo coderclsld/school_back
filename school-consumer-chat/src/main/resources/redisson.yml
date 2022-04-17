@@ -1,0 +1,7 @@
+singleServerConfig:
+  password: 110120119
+  address: "redis://120.78.179.106"
+  database: 1
+threads: 1
+nettyThreads: 1
+transportMode: "NIO"

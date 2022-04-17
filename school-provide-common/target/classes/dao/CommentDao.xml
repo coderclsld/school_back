@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.clsld.provide.dao.CommentDao">
+  <resultMap id="BaseResultMap" type="com.clsld.api.pojo.Comment">
+    <id column="comment_id" jdbcType="INTEGER" property="comment_id" />
+    <result column="avatar_url" jdbcType="VARCHAR" property="avatar_url" />
+    <result column="parent_name" jdbcType="VARCHAR" property="parent_name" />
+    <result column="userid" jdbcType="VARCHAR" property="userid" />
+    <result column="parent_id" jdbcType="VARCHAR" property="parent_id" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="answer_id" jdbcType="INTEGER" property="answer_id" />
+    <result column="username" jdbcType="VARCHAR" property="username" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    comment_id, avatar_url, parent_name, userid, parent_id, content, answer_id, username
+  </sql>
+<!--  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">-->
+<!--    select -->
+<!--    <include refid="Base_Column_List" />-->
+<!--    from comment-->
+<!--    where comment_id = #{commentId,jdbcType=INTEGER}-->
+<!--  </select>-->
+  <select id="selectAll"  resultType="com.clsld.api.pojo.Comment">
+    select
+    <include refid="Base_Column_List" />
+    from comment
+  </select>
+  <select id="selectByAnswerId"  resultType="com.clsld.api.pojo.Comment">
+    select
+    <include refid="Base_Column_List" />
+    from comment
+    where answer_id = #{answerId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from comment
+    where comment_id = #{commentId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="comment_id" keyProperty="commentId" parameterType="com.clsld.api.pojo.Comment" useGeneratedKeys="true">
+    insert into comment (avatar_url, parent_name, userid, 
+      parent_id, content, answer_id, 
+      username)
+    values (#{avatarUrl,jdbcType=VARCHAR}, #{parentName,jdbcType=VARCHAR}, #{userid,jdbcType=VARCHAR}, 
+      #{parentId,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, #{answerId,jdbcType=INTEGER}, 
+      #{username,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" keyColumn="comment_id" keyProperty="commentId" parameterType="com.clsld.api.pojo.Comment" useGeneratedKeys="true">
+    insert into comment
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="avatarUrl != null">
+        avatar_url,
+      </if>
+      <if test="parentName != null">
+        parent_name,
+      </if>
+      <if test="userid != null">
+        userid,
+      </if>
+      <if test="parentId != null">
+        parent_id,
+      </if>
+      <if test="content != null">
+        content,
+      </if>
+      <if test="answerId != null">
+        answer_id,
+      </if>
+      <if test="username != null">
+        username,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="avatarUrl != null">
+        #{avatarUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="parentName != null">
+        #{parentName,jdbcType=VARCHAR},
+      </if>
+      <if test="userid != null">
+        #{userid,jdbcType=VARCHAR},
+      </if>
+      <if test="parentId != null">
+        #{parentId,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null">
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="answerId != null">
+        #{answerId,jdbcType=INTEGER},
+      </if>
+      <if test="username != null">
+        #{username,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.clsld.api.pojo.Comment">
+    update comment
+    <set>
+      <if test="avatarUrl != null">
+        avatar_url = #{avatarUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="parentName != null">
+        parent_name = #{parentName,jdbcType=VARCHAR},
+      </if>
+      <if test="userid != null">
+        userid = #{userid,jdbcType=VARCHAR},
+      </if>
+      <if test="parentId != null">
+        parent_id = #{parentId,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null">
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="answerId != null">
+        answer_id = #{answerId,jdbcType=INTEGER},
+      </if>
+      <if test="username != null">
+        username = #{username,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where comment_id = #{commentId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.clsld.api.pojo.Comment">
+    update comment
+    set avatar_url = #{avatarUrl,jdbcType=VARCHAR},
+      parent_name = #{parentName,jdbcType=VARCHAR},
+      userid = #{userid,jdbcType=VARCHAR},
+      parent_id = #{parentId,jdbcType=VARCHAR},
+      content = #{content,jdbcType=VARCHAR},
+      answer_id = #{answerId,jdbcType=INTEGER},
+      username = #{username,jdbcType=VARCHAR}
+    where comment_id = #{commentId,jdbcType=INTEGER}
+  </update>
+  <select id="selectByLimit" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List"></include>
+    from comment limit #{page,jdbcType=INTEGER},10;
+  </select>
+</mapper>

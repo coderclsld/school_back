@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.clsld.provide.dao.UserDao">
+  <resultMap id="BaseResultMap" type="com.clsld.api.pojo.User">
+    <id column="userid" jdbcType="VARCHAR" property="userid" />
+    <result column="nickname" jdbcType="VARCHAR" property="nickname" />
+    <result column="genderclass" jdbcType="VARCHAR" property="genderclass" />
+    <result column="gender" jdbcType="INTEGER" property="gender" />
+    <result column="studentNum" jdbcType="INTEGER" property="studentNum" />
+    <result column="avatarUrl" jdbcType="VARCHAR" property="avatarUrl" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    userid, nickname, genderclass, gender, studentNum, avatarUrl
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from user
+    where userid = #{userid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from user
+    where userid = #{userid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" keyColumn="userid" keyProperty="userid" parameterType="com.clsld.api.pojo.User" useGeneratedKeys="true">
+    insert into user (nickname, genderclass, gender, 
+      studentNum, avatarUrl)
+    values (#{nickname,jdbcType=VARCHAR}, #{genderclass,jdbcType=VARCHAR}, #{gender,jdbcType=INTEGER}, 
+      #{studentnum,jdbcType=INTEGER}, #{avatarurl,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" keyColumn="userid" keyProperty="userid" parameterType="com.clsld.api.pojo.User" useGeneratedKeys="true">
+    insert into user
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="nickname != null">
+        nickname,
+      </if>
+      <if test="genderclass != null">
+        genderclass,
+      </if>
+      <if test="gender != null">
+        gender,
+      </if>
+      <if test="studentnum != null">
+        studentNum,
+      </if>
+      <if test="avatarurl != null">
+        avatarUrl,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="nickname != null">
+        #{nickname,jdbcType=VARCHAR},
+      </if>
+      <if test="genderclass != null">
+        #{genderclass,jdbcType=VARCHAR},
+      </if>
+      <if test="gender != null">
+        #{gender,jdbcType=INTEGER},
+      </if>
+      <if test="studentnum != null">
+        #{studentnum,jdbcType=INTEGER},
+      </if>
+      <if test="avatarurl != null">
+        #{avatarurl,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.clsld.api.pojo.User">
+    update user
+    <set>
+      <if test="nickname != null">
+        nickname = #{nickname,jdbcType=VARCHAR},
+      </if>
+      <if test="genderclass != null">
+        genderclass = #{genderclass,jdbcType=VARCHAR},
+      </if>
+      <if test="gender != null">
+        gender = #{gender,jdbcType=INTEGER},
+      </if>
+      <if test="studentnum != null">
+        studentNum = #{studentnum,jdbcType=INTEGER},
+      </if>
+      <if test="avatarurl != null">
+        avatarUrl = #{avatarurl,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where userid = #{userid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.clsld.api.pojo.User">
+    update user
+    set nickname = #{nickname,jdbcType=VARCHAR},
+      genderclass = #{genderclass,jdbcType=VARCHAR},
+      gender = #{gender,jdbcType=INTEGER},
+      studentNum = #{studentnum,jdbcType=INTEGER},
+      avatarUrl = #{avatarurl,jdbcType=VARCHAR}
+    where userid = #{userid,jdbcType=VARCHAR}
+  </update>
+  <select id="selectUserAll" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"></include>
+    from user;
+  </select>
+</mapper>

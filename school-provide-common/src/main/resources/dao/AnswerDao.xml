@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.clsld.provide.dao.AnswerDao">
+  <resultMap id="BaseResultMap" type="com.clsld.api.pojo.Answer">
+    <id column="answer_id" jdbcType="INTEGER" property="answer_id" />
+    <result column="answer" jdbcType="VARCHAR" property="answer" />
+    <result column="zang" jdbcType="INTEGER" property="zang" />
+    <result column="userid" jdbcType="VARCHAR" property="userid" />
+    <result column="question_id" jdbcType="INTEGER" property="question_id" />
+    <result column="username" jdbcType="VARCHAR" property="username" />
+    <result column="avatar_url" jdbcType="VARCHAR" property="avatar_url"/>
+  </resultMap>
+  <sql id="Base_Column_List">
+    answer_id, answer, zang, userid, question_id, username,avatar_url
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from answer
+    where answer_id = #{answer_id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from answer
+  </select>
+  <select id="selectAnswerByQid" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from answer
+    where question_id = #{question_id,jdbcType=INTEGER}
+  </select>
+  <select id="getZang" resultType="java.lang.Integer">
+    select zang
+    from answer
+    where answer_id = #{answer_id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from answer
+    where answer_id = #{answer_id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="answer_id" keyProperty="answerId" parameterType="com.clsld.api.pojo.Answer" useGeneratedKeys="true">
+    insert into answer (answer, zang, userid, 
+      question_id, username,avatar_url)
+    values (#{answer,jdbcType=VARCHAR}, #{zang,jdbcType=INTEGER}, #{userid,jdbcType=VARCHAR}, 
+      #{question_id,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR},#{avatar_url,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" keyColumn="answer_id" keyProperty="answerId" parameterType="com.clsld.api.pojo.Answer" useGeneratedKeys="true">
+    insert into answer
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="answer != null">
+        answer,
+      </if>
+      <if test="zang != null">
+        zang,
+      </if>
+      <if test="userid != null">
+        userid,
+      </if>
+      <if test="questionId != null">
+        question_id,
+      </if>
+      <if test="username != null">
+        username,
+      </if>
+      <if test="avatar_url != null">
+        avatar_url,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="answer != null">
+        #{answer,jdbcType=VARCHAR},
+      </if>
+      <if test="zang != null">
+        #{zang,jdbcType=INTEGER},
+      </if>
+      <if test="userid != null">
+        #{userid,jdbcType=VARCHAR},
+      </if>
+      <if test="questionId != null">
+        #{question_id,jdbcType=INTEGER},
+      </if>
+      <if test="username != null">
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="avatar_url != null">
+        #{avatar_url,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.clsld.api.pojo.Answer">
+    update answer
+    <set>
+      <if test="answer != null">
+        answer = #{answer,jdbcType=VARCHAR},
+      </if>
+      <if test="zang != null">
+        zang = #{zang,jdbcType=INTEGER},
+      </if>
+      <if test="userid != null">
+        userid = #{userid,jdbcType=VARCHAR},
+      </if>
+      <if test="questionId != null">
+        question_id = #{questionId,jdbcType=INTEGER},
+      </if>
+      <if test="username != null">
+        username = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="avatar_url != null">
+        avatar_url = #{avatar_url,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where answer_id = #{answer_id,jdbcType=INTEGER}
+  </update>
+  <update id="addZang">
+    update answer
+    set zang = zang + 1
+    where answer_id = #{answer_id}
+  </update>
+  <update id="cutZang">
+    update answer
+    set zang = zang - 1
+    where answer_id = #{answer_id}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.clsld.api.pojo.Answer">
+    update answer
+    set answer = #{answer,jdbcType=VARCHAR},
+      zang = #{zang,jdbcType=INTEGER},
+      userid = #{userid,jdbcType=VARCHAR},
+      question_id = #{question_id,jdbcType=INTEGER},
+      username = #{username,jdbcType=VARCHAR}
+    where answer_id = #{answer_id,jdbcType=INTEGER}
+  </update>
+  <select id="selectGyZang" resultMap="BaseResultMap">
+    select  <include refid="Base_Column_List" />
+    from answer ORDER BY zang desc limit #{page,jdbcType=INTEGER},10;
+  </select>
+  <select id="selectGyZangByQid" resultMap="BaseResultMap">
+    select  <include refid="Base_Column_List" />
+    from answer where `question_id` = #{question_id}
+    order by zang desc limit #{page},10;
+  </select>
+  <select id="getCount" resultType="java.lang.Integer">
+    select count(*)
+    from answer;
+  </select>
+  <select id="getCountByQid" resultType="java.lang.Integer">
+    select count(*)
+    from answer
+    where question_id=#{question_id,jdbcType=INTEGER};
+  </select>
+</mapper>
